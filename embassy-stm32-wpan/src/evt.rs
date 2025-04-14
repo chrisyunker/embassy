@@ -2,7 +2,8 @@ use core::marker::PhantomData;
 use core::{ptr, slice};
 
 use super::PacketHeader;
-use crate::consts::TL_EVT_HEADER_SIZE;
+use crate::consts::{TL_EVT_HEADER_SIZE, TL_EVT_SRL_HEADER_SIZE};
+use crate::hci::{Event, event::Packet};
 
 /**
  * The payload of `Evt` for a command status event
@@ -112,6 +113,23 @@ impl<T: MemoryManager> EvtBox<T> {
         Self { ptr, mm: PhantomData }
     }
 
+    /// Returns HCI Event
+    #[cfg(feature = "ble")]
+    pub fn as_hci_event(&self) -> hci::Event {
+        
+        let evt_payload = unsafe {
+            let evt: *const Evt = &(*self.ptr).evt_serial.evt;
+            let evt_buf: *const u8 = evt.cast();
+
+            let evt_len = (*evt).payload_len as usize + TL_EVT_HEADER_SIZE;
+
+            slice::from_raw_parts(evt_buf, evt_len)
+        };
+
+        let packet = Packet(evt_payload);
+        Event::new(packet).unwrap()
+    }
+
     /// Returns information about the event
     pub fn stub(&self) -> EvtStub {
         unsafe {
@@ -137,7 +155,7 @@ impl<T: MemoryManager> EvtBox<T> {
             let evt_serial: *const EvtSerial = &(*self.ptr).evt_serial;
             let evt_serial_buf: *const u8 = evt_serial.cast();
 
-            let len = (*evt_serial).evt.payload_len as usize + TL_EVT_HEADER_SIZE;
+            let len = (*evt_serial).evt.payload_len as usize + TL_EVT_SRL_HEADER_SIZE;
 
             slice::from_raw_parts(evt_serial_buf, len)
         }

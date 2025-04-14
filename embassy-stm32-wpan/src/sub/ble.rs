@@ -108,8 +108,6 @@ impl evt::MemoryManager for Ble {
     }
 }
 
-pub extern crate stm32wb_hci as hci;
-
 impl hci::Controller for Ble {
     async fn controller_write(&mut self, opcode: Opcode, payload: &[u8]) {
         self.tl_write(opcode.0, payload).await;

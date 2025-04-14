@@ -1,6 +1,6 @@
 use core::{mem, slice};
 
-use crate::consts::{TL_CS_EVT_SIZE, TL_EVT_HEADER_SIZE, TL_PACKET_HEADER_SIZE};
+use crate::consts::{TL_CS_EVT_SIZE, TL_EVT_SRL_HEADER_SIZE, TL_PACKET_HEADER_SIZE};
 
 const SHCI_OGF: u16 = 0x3F;
 
@@ -370,6 +370,6 @@ impl Default for ShciBleInitCmdParam {
     }
 }
 
-pub const TL_BLE_EVT_CS_PACKET_SIZE: usize = TL_EVT_HEADER_SIZE + TL_CS_EVT_SIZE;
+pub const TL_BLE_EVT_CS_PACKET_SIZE: usize = TL_EVT_SRL_HEADER_SIZE + TL_CS_EVT_SIZE;
 #[allow(dead_code)] // Not used currently but reserved
 const TL_BLE_EVT_CS_BUFFER_SIZE: usize = TL_PACKET_HEADER_SIZE + TL_BLE_EVT_CS_PACKET_SIZE;

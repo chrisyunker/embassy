@@ -6,7 +6,7 @@ use bit_field::BitField;
 use crate::cmd::{AclDataPacket, CmdPacket};
 #[cfg(feature = "mac")]
 use crate::consts::C_SIZE_CMD_STRING;
-use crate::consts::{POOL_SIZE, TL_CS_EVT_SIZE, TL_EVT_HEADER_SIZE, TL_PACKET_HEADER_SIZE};
+use crate::consts::{POOL_SIZE, TL_CS_EVT_SIZE, TL_EVT_SRL_HEADER_SIZE, TL_PACKET_HEADER_SIZE};
 use crate::unsafe_linked_list::LinkedListNode;
 
 #[derive(Debug, Copy, Clone)]
@@ -232,7 +232,7 @@ pub static mut FREE_BUF_QUEUE: Aligned<A4, MaybeUninit<LinkedListNode>> = Aligne
 pub static mut TRACES_EVT_QUEUE: Aligned<A4, MaybeUninit<LinkedListNode>> = Aligned(MaybeUninit::uninit());
 
 #[link_section = "MB_MEM2"]
-pub static mut CS_BUFFER: Aligned<A4, MaybeUninit<[u8; TL_PACKET_HEADER_SIZE + TL_EVT_HEADER_SIZE + TL_CS_EVT_SIZE]>> =
+pub static mut CS_BUFFER: Aligned<A4, MaybeUninit<[u8; TL_PACKET_HEADER_SIZE + TL_EVT_SRL_HEADER_SIZE + TL_CS_EVT_SIZE]>> =
     Aligned(MaybeUninit::uninit());
 
 #[link_section = "MB_MEM2"]
@@ -249,7 +249,7 @@ pub static mut MAC_802_15_4_CMD_BUFFER: Aligned<A4, MaybeUninit<CmdPacket>> = Al
 #[cfg(feature = "mac")]
 #[link_section = "MB_MEM2"]
 pub static mut MAC_802_15_4_NOTIF_RSP_EVT_BUFFER: MaybeUninit<
-    Aligned<A4, [u8; TL_PACKET_HEADER_SIZE + TL_EVT_HEADER_SIZE + 255]>,
+    Aligned<A4, [u8; TL_PACKET_HEADER_SIZE + TL_EVT_SRL_HEADER_SIZE + 255]>,
 > = MaybeUninit::uninit();
 
 #[link_section = "MB_MEM2"]
@@ -259,7 +259,7 @@ pub static mut EVT_POOL: Aligned<A4, MaybeUninit<[u8; POOL_SIZE]>> = Aligned(May
 pub static mut SYS_CMD_BUF: Aligned<A4, MaybeUninit<CmdPacket>> = Aligned(MaybeUninit::uninit());
 
 #[link_section = "MB_MEM2"]
-pub static mut SYS_SPARE_EVT_BUF: Aligned<A4, MaybeUninit<[u8; TL_PACKET_HEADER_SIZE + TL_EVT_HEADER_SIZE + 255]>> =
+pub static mut SYS_SPARE_EVT_BUF: Aligned<A4, MaybeUninit<[u8; TL_PACKET_HEADER_SIZE + TL_EVT_SRL_HEADER_SIZE + 255]>> =
     Aligned(MaybeUninit::uninit());
 
 #[cfg(feature = "mac")]
@@ -273,7 +273,7 @@ pub static mut BLE_CMD_BUFFER: Aligned<A4, MaybeUninit<CmdPacket>> = Aligned(May
 
 #[cfg(feature = "ble")]
 #[link_section = "MB_MEM2"]
-pub static mut BLE_SPARE_EVT_BUF: Aligned<A4, MaybeUninit<[u8; TL_PACKET_HEADER_SIZE + TL_EVT_HEADER_SIZE + 255]>> =
+pub static mut BLE_SPARE_EVT_BUF: Aligned<A4, MaybeUninit<[u8; TL_PACKET_HEADER_SIZE + TL_EVT_SRL_HEADER_SIZE + 255]>> =
     Aligned(MaybeUninit::uninit());
 
 #[cfg(feature = "ble")]

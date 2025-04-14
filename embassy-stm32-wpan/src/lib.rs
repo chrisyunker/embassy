@@ -42,11 +42,11 @@ pub mod sub;
 pub mod tables;
 pub mod unsafe_linked_list;
 
+#[cfg(feature = "ble")]
+pub extern crate stm32wb_hci as hci;
+
 #[cfg(feature = "mac")]
 pub mod mac;
-
-#[cfg(feature = "ble")]
-pub use crate::sub::ble::hci;
 
 type PacketHeader = LinkedListNode;
 
